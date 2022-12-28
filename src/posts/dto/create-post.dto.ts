@@ -10,4 +10,6 @@ export class CreatePostDto {
   @IsString()
   @MinLength(5)
   body: string;
+
+  userId: string;
 }
