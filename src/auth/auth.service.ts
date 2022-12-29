@@ -23,6 +23,12 @@ export class AuthService {
   }
 
   sign(user: User) {
-    return this.jwtService.sign({ sub: user.id, email: user.email });
+    const accessToken = this.jwtService.sign({
+      sub: user.id,
+      email: user.email,
+    });
+    return {
+      access_token: accessToken,
+    };
   }
 }

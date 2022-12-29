@@ -7,22 +7,34 @@ import {
   Param,
   Delete,
   ParseUUIDPipe,
+  UseGuards,
+  Query,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { PostQueryDto } from './dto/query.dto';
+import { Me } from '../auth/guards/me.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
-@Controller('posts')
+@Controller('api/v1/posts')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @Post()
-  create(@Body() createPostDto: CreatePostDto) {
-    return this.postsService.create(createPostDto);
+  @UseGuards(JwtAuthGuard)
+  create(@Body() createPostDto: CreatePostDto, @Me() me) {
+    return this.postsService.create({ ...createPostDto, userId: me.id });
   }
-
   @Get()
-  findAll() {
+  findAll(
+    // @Query('author') author: boolean,
+    // @Query('categories') categories: string,
+    @Query() query,
+  ) {
+    // console.log({ author, categories });
+    console.log(query);
+
     return this.postsService.findAll();
   }
 

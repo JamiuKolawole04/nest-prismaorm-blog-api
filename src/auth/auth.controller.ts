@@ -11,6 +11,7 @@ import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { Me } from './guards/me.guard';
 
 @Controller('api/v1/auth')
 export class AuthController {
@@ -25,8 +26,11 @@ export class AuthController {
 
   @Get('profile')
   @UseGuards(JwtAuthGuard)
-  profile(@Request() req) {
-    return req.user;
+  // profile(@Request() req) {
+  //   return req.user;
+  // }
+  profile(@Me() me) {
+    return me;
   }
 
   @Post('register')
