@@ -27,12 +27,7 @@ export class PostsController {
     return this.postsService.create({ ...createPostDto, userId: me.id });
   }
   @Get()
-  findAll(
-    // @Query('author') author: boolean,
-    // @Query('categories') categories: string,
-    @Query() query,
-  ) {
-    // console.log({ author, categories });
+  findAll(@Query() query: { author: boolean; categories: boolean }) {
     console.log(query);
 
     return this.postsService.findAll();
