@@ -8,7 +8,13 @@ import { UpdatePostDto } from './dto/update-post.dto';
 @Injectable()
 export class PostsService {
   constructor(private readonly prismaService: PrismaService) {}
-  create(createPostDto: CreatePostDto) {
+  // create(createPostDto: CreatePostDto)
+  create(createPostDto: Prisma.PostCreateInput) {
+    /**
+     * creating posts with userId and without categories
+     *  */
+    // return this.prismaService.post.create({ data: createPostDto });
+
     return this.prismaService.post.create({ data: createPostDto });
   }
 
@@ -21,7 +27,13 @@ export class PostsService {
     return this.prismaService.post.findUnique({ where: { id } });
   }
 
-  update(id: string, updatePostDto: UpdatePostDto) {
+  // update(id: string, updatePostDto: UpdatePostDto) {
+  //   return this.prismaService.post.update({
+  //     data: updatePostDto,
+  //     where: { id },
+  //   });
+  // }
+  update(id: string, updatePostDto: Prisma.PostUpdateInput) {
     return this.prismaService.post.update({
       data: updatePostDto,
       where: { id },

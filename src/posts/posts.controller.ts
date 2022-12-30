@@ -25,7 +25,24 @@ export class PostsController {
   @Post()
   @UseGuards(JwtAuthGuard)
   create(@Body() createPostDto: CreatePostDto, @Me() me) {
-    return this.postsService.create({ ...createPostDto, userId: me.id });
+    /**
+     * creatin posts with userId and without categories
+     */
+    // return this.postsService.create({ ...createPostDto, userId: me.id });
+
+    /**
+     * posts creation with categories and userId
+     */
+
+    const categories = createPostDto.categories?.map((category) => ({
+      id: category,
+    }));
+
+    return this.postsService.create({
+      ...createPostDto,
+      author: { connect: { id: me.id } },
+      categories: { connect: categories },
+    });
   }
 
   /**
@@ -60,7 +77,13 @@ export class PostsController {
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updatePostDto: UpdatePostDto,
   ) {
-    return this.postsService.update(id, updatePostDto);
+    const categories = updatePostDto.categories.map((category) => ({
+      id: category,
+    }));
+    return this.postsService.update(id, {
+      ...updatePostDto,
+      categories: { set: categories },
+    });
   }
 
   @Delete(':id')
