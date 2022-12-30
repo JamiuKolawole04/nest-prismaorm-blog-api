@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   ParseUUIDPipe,
+  Query,
 } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -21,8 +22,22 @@ export class CategoriesController {
     return this.categoriesService.create(createCategoryDto);
   }
 
+  /**
+   * @Param null
+   * @returns categories
+   */
+
+  // @Get()
+  // findAll() {
+  //   return this.categoriesService.findAll();
+  // }
+
+  /**
+   * @param posts null
+   * @returns categories
+   */
   @Get()
-  findAll() {
+  findAll(@Query() query: { posts: boolean }) {
     return this.categoriesService.findAll();
   }
 

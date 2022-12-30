@@ -6,10 +6,13 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserQueryDto } from './dto/query.dto';
+import { isEmpty } from '../utils';
 
 @Controller('api/v1/users')
 export class UsersController {
@@ -20,9 +23,23 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
+  /**
+   * @param null
+   * @returns return all users without aquery
+   */
+
+  // @Get()
+  // findAll() {
+  //   return this.usersService.findAll();
+  // }
+
+  /**
+   * @param posts  null
+   * @returns all users
+   */
   @Get()
-  findAll() {
-    return this.usersService.findAll();
+  findAll(@Query() query: { posts: boolean }) {
+    return this.usersService.findAll(isEmpty(query) ? null : query);
   }
 
   @Get(':id')

@@ -16,6 +16,7 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import { PostQueryDto } from './dto/query.dto';
 import { Me } from '../auth/guards/me.guard';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { isEmpty } from '../utils';
 
 @Controller('api/v1/posts')
 export class PostsController {
@@ -26,11 +27,27 @@ export class PostsController {
   create(@Body() createPostDto: CreatePostDto, @Me() me) {
     return this.postsService.create({ ...createPostDto, userId: me.id });
   }
+
+  /**
+   *get all users without params
+   * @param none
+   * @returns posts
+   */
+
+  // @Get()
+  // findAll() {
+  //   return this.postsService.findAll();
+  // }
+
+  /**
+   * get all users with params or not
+   * @param author | categories  null
+   * @returns posts with or without authors
+   */
   @Get()
   findAll(@Query() query: { author: boolean; categories: boolean }) {
     console.log(query);
-
-    return this.postsService.findAll();
+    return this.postsService.findAll(isEmpty(query) ? null : query);
   }
 
   @Get(':id')
