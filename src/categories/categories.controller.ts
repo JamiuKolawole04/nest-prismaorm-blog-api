@@ -12,6 +12,7 @@ import {
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { isEmpty } from '../utils';
 
 @Controller('api/v1/categories')
 export class CategoriesController {
@@ -38,7 +39,7 @@ export class CategoriesController {
    */
   @Get()
   findAll(@Query() query: { posts: boolean }) {
-    return this.categoriesService.findAll();
+    return this.categoriesService.findAll(isEmpty(query) ? null : query);
   }
 
   @Get(':id')
